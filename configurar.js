@@ -4,7 +4,7 @@ const users = require('./users.json');
 async function configurar(){
     try{
         const {db, client } = await connect();
-        const colecao = db.collection('users');
+        const colecao = db.collection('usuarios');
 
         colecao.drop();
 

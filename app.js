@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-
+const { connect } = require('./db');
 const { configurar } = require('./configurar');
 
 configurar();
@@ -40,23 +40,33 @@ function checkLogin(req, res, next) {
     }
 }
 
-function checkUserInfo() {
-    
+async function checkUserInfo(usuario, senha) {
+    const {db, client} = await connect();
+    const userInfo = await db.collection('usuarios').findOne({user: usuario});
+    client.close();
+
+    if(userInfo === null){
+        return false;
+    } else {
+        return userInfo.pass === senha;
+    }
 }
 
 app.get('/login', (req, res) => {
     res.render('login');
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const {usuario, senha} = req.body; //os valores "name" dos inputs são enviados com a rquisição post
 
-    if(usuario === 'admin' && senha === '123') {
-        req.session.logado = true;
-        res.redirect('/');
-    } else {
-        res.send('Usuário ou senha inválidos <a href="/login">Tentar de novo</a>');
-    }
+    verified = await checkUserInfo(req.body.usuario, req.body.senha).then((verified) => {
+        if(verified) {
+            req.session.logado = true;
+            res.redirect('/');
+        } else {
+            res.send('Usuário ou senha inválidos <a href="/login">Tentar de novo</a>');
+        }
+    });
 });
 
 app.get('/logout', (req, res) => {

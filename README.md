@@ -7,7 +7,7 @@
 
 ## Descrição do Projeto
 Consiste em uma aplicação desenvolvida em JavaScript, com o Node.js, que simula um sistema de login. Após a autenticação, os dados da sessão são armazenados no navegador por 1 minuto, o que permite ao usuário retornar à página inicial durante esse tempo sem precisar inserir seus dados novamente.<br>
-A aplicação foi desenvolvida visando o gerenciamento de dados referentes a clientes, produtos e compras de uma plataforma de e-commerce.
+Para o armazenamento dos dados cadastrais de usuários, foi utilizado um banco de dados MongoDB.
 <br><br>
 
 ## Bibliotecas Utilizadas
